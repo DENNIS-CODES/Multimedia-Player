@@ -28,9 +28,37 @@ public class MainActivity extends AppCompatActivity {
         return Uri.parse("android.resource://" + getPackageName() + 
         "/raw/" + mediaName);
             private void initializePlayer() {
+                Uri videoUri = getMedia(VIDEO_SAMPLE);
+                mVideoView.setVideoURI(videoUri);
+                mVideoView.start();
+                private void releasePlayer() {
+                mVideoView.stopPlayback();
+}
+}
+}
+        @Override
+protected void onStart() {
+   super.onStart();
 
+   initializePlayer();
 }
+        @Override
+protected void onStop() {
+   super.onStop();
+
+   releasePlayer();
 }
+        @Override
+protected void onPause() {
+   super.onPause();
+
+   if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+       mVideoView.pause();
+   }
+}
+   MediaController controller = new MediaController(this);
+controller.setMediaPlayer(mVideoView);
+  mVideoView.setMediaController(controller);
 
 // ...prepare and start...
     }
